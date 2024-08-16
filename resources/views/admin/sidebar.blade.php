@@ -180,7 +180,7 @@
                         </li>
                     @endif
                 @endif
-                
+
 
                 @if (Auth('admin')->User()->type == 'Super Admin')
                     <!-- <li
@@ -237,11 +237,11 @@
                                         </a>
                                     </li>
                                 @endif
-                                <!-- <li>
+                                <li>
                                     <a href="{{ url('/admin/dashboard/frontpage') }}">
                                         <span class="sub-item">Frontend Settings</span>
                                     </a>
-                                </li> -->
+                                </li>
                                 <li>
                                     <a href="{{ route('termspolicy') }}">
                                         <span class="sub-item">Terms and Privacy</span>
@@ -256,7 +256,7 @@
                         </div>
                     </li>
                 @endif
-<!-- 
+<!--
                 @if (Auth('admin')->User()->type != 'Conversion Agent')
                     <li @class([
                         'nav-item',
