@@ -41,7 +41,7 @@
                         <a href="#pref" class="nav-link" data-toggle="tab">Preference</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#email" class="nav-link" data-toggle="tab">Email/Google Login-Captcha</a>
+                        <a href="#email" class="nav-link" data-toggle="tab">Email</a>
                     </li>
                     <li class="nav-item">
                         <a href="#display" class="nav-link" data-toggle="tab">Theme/Display</a>
@@ -52,15 +52,15 @@
                         <?php
 if (! isset($_instance)) {
     $html = \Livewire\Livewire::mount('admin.software-module', [])->html();
-} elseif ($_instance->childHasBeenRendered('JR44Ud9')) {
-    $componentId = $_instance->getRenderedChildComponentId('JR44Ud9');
-    $componentTag = $_instance->getRenderedChildComponentTagName('JR44Ud9');
+} elseif ($_instance->childHasBeenRendered('k1RDomM')) {
+    $componentId = $_instance->getRenderedChildComponentId('k1RDomM');
+    $componentTag = $_instance->getRenderedChildComponentTagName('k1RDomM');
     $html = \Livewire\Livewire::dummyMount($componentId, $componentTag);
-    $_instance->preserveRenderedChild('JR44Ud9');
+    $_instance->preserveRenderedChild('k1RDomM');
 } else {
     $response = \Livewire\Livewire::mount('admin.software-module', []);
     $html = $response->html();
-    $_instance->logRenderedChild('JR44Ud9', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
+    $_instance->logRenderedChild('k1RDomM', $response->id(), \Livewire\Livewire::getRootElementTagName($html));
 }
 echo $html;
 ?>

@@ -15,6 +15,11 @@
                         required>
                 </div>
                 <div class="form-group col-md-6">
+                    <h5 class="">Phone Number</h5>
+                    <input type="number" name="phone" class="form-control " value="<?php echo e($settings->phone); ?>"
+                        required>
+                </div>
+                <div class="form-group col-md-6">
                     <h5 class="">Website Keywords</h5>
                     <input type="text" name="keywords" class="form-control " value="<?php echo e($settings->keywords); ?>"
                         required>
@@ -24,10 +29,10 @@
                     <input type="text" placeholder="https://yoursite.com" name="site_address" class="form-control "
                         value="<?php echo e($settings->site_address); ?>" required>
                 </div>
-                <div class="form-group col-md-12">
-                    <h5>Live Chat</h5>
-                    <textarea name="tawk_to" id="livechat" class="form-control" rows="4"><?php echo e($settings->tawk_to); ?></textarea>
-                </div>
+
+
+
+
                 <div class="form-group col-md-12">
                     <h5 class="">Website Description</h5>
                     <textarea name="description" class="form-control " rows="4"><?php echo e($settings->description); ?></textarea>
@@ -45,16 +50,16 @@
                     <small class="">This message will be displayed to users whose registration
                         date is less than or equal to 3 days</small>
                 </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Purchase/License Code</h5>
-                    <input name="purchase_code" class="form-control " type="text"
-                        value="<?php echo e($moresettings->purchase_code); ?>">
-                </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Personal Access Token</h5>
-                    <input name="merchant_key" class="form-control" type="text"
-                        value="<?php echo e($settings->merchant_key); ?>">
-                </div>
+
+
+
+
+
+
+
+
+
+
                 <div class="form-group col-md-6">
                     <h5 class="">Timezone</h5>
                     <select name="timezone" class="form-control  select2">
@@ -64,15 +69,15 @@
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Installation Type</h5>
-                    <select name="install_type" class="form-control ">
-                        <option><?php echo e($settings->install_type); ?></option>
-                        <option>Main-Domain</option>
-                        <option>Sub-Domain</option>
-                        <option>Sub-Folder</option>
-                    </select>
-                </div>
+
+
+
+
+
+
+
+
+
             </div>
 
             <div class="form-row">

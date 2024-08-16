@@ -181,7 +181,7 @@
                         </li>
                     <?php endif; ?>
                 <?php endif; ?>
-                
+
 
                 <?php if(Auth('admin')->User()->type == 'Super Admin'): ?>
                     <!-- <li
@@ -238,11 +238,11 @@
                                         </a>
                                     </li>
                                 <?php endif; ?>
-                                <!-- <li>
+                                <li>
                                     <a href="<?php echo e(url('/admin/dashboard/frontpage')); ?>">
                                         <span class="sub-item">Frontend Settings</span>
                                     </a>
-                                </li> -->
+                                </li>
                                 <li>
                                     <a href="<?php echo e(route('termspolicy')); ?>">
                                         <span class="sub-item">Terms and Privacy</span>
@@ -257,7 +257,7 @@
                         </div>
                     </li>
                 <?php endif; ?>
-<!-- 
+<!--
                 <?php if(Auth('admin')->User()->type != 'Conversion Agent'): ?>
                     <li class="<?php echo \Illuminate\Support\Arr::toCssClasses([
                         'nav-item',

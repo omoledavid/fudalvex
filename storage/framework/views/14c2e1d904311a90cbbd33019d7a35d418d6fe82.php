@@ -59,25 +59,25 @@
                         </label>
                     </div>
                 </div>
-                <div class="mt-4 col-md-6">
-                    <h5 class="">Weekend Trade:</h5>
-                    <div class="selectgroup">
-                        <label class="selectgroup-item">
-                            <input type="radio" name="weekend_trade" value="on" class="selectgroup-input"
-                                <?php echo e($settings->weekend_trade == 'on' ? 'checked' : ''); ?>>
-                            <span class="selectgroup-button">On</span>
-                        </label>
-                        <label class="selectgroup-item">
-                            <input type="radio" name="weekend_trade"
-                                <?php echo e($settings->weekend_trade != 'on' ? 'checked' : ''); ?> value="off"
-                                class="selectgroup-input">
-                            <span class="selectgroup-button">Off</span>
-                        </label>
-                    </div>
-                    <div>
-                        <small class="">if turned off, Users will not receive ROI on weekends</small>
-                    </div>
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div class="mt-4 col-md-6">
                     <h5 class="">Withdrawals</h5>
@@ -100,30 +100,29 @@
 
                 </div>
 
-                <div class="mt-4 col-md-6">
-                    <h5 class="">Google ReCaptcha:</h5>
-                    <div class="selectgroup">
-                        <label class="selectgroup-item">
-                            <input type="radio" name="captcha" value="true" class="selectgroup-input"
-                                <?php echo e($settings->captcha == 'true' ? 'checked' : ''); ?>>
-                            <span class="selectgroup-button">On</span>
-                        </label>
-                        <label class="selectgroup-item">
-                            <input type="radio" name="captcha" <?php echo e($settings->captcha != 'true' ? 'checked' : ''); ?>
 
-                                value="false" class="selectgroup-input">
-                            <span class="selectgroup-button">Off</span>
-                        </label>
-                    </div>
-                    <div>
-                        <small class="">if turned on, Users will need to pass the google recaptcha challenge upon
-                            registration, also please see how to set up google recpatcha on your website before you can
-                            use it. <a
-                                href="https://doc.onlinetrade.brynamics.xyz/details/how-to-add-google-recaptcha-"
-                                target="_blank">See how</a></small>
-                    </div>
 
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div class="mt-4 col-md-6">
                     <h5 class="">Translation</h5>
@@ -146,25 +145,25 @@
                     </div>
                 </div>
 
-                <div class="mt-4 col-md-6">
-                    <h5 class="">Trade Mode</h5>
-                    <div class="selectgroup">
-                        <label class="selectgroup-item">
-                            <input type="radio" name="trade_mode" value="on" class="selectgroup-input"
-                                <?php echo e($settings->trade_mode == 'on' ? 'checked' : ''); ?>>
-                            <span class="selectgroup-button">On</span>
-                        </label>
-                        <label class="selectgroup-item">
-                            <input type="radio" name="trade_mode"
-                                <?php echo e($settings->trade_mode != 'on' ? 'checked' : ''); ?> value="off"
-                                class="selectgroup-input">
-                            <span class="selectgroup-button">Off</span>
-                        </label>
-                    </div>
-                    <div>
-                        <small class="">if turned off, Users will not receive thier ROI at all.</small>
-                    </div>
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div class="mt-4 col-md-6">
                     <h5 class="">KYC(Verification)</h5>
@@ -213,27 +212,27 @@
                     </div>
                 </div>
 
-                <div class="mt-4 col-md-6">
-                    <h5 class="">Google Login</h5>
-                    <div class="selectgroup">
-                        <label class="selectgroup-item">
-                            <input type="radio" name="social" id="social" value="yes"
-                                class="selectgroup-input"
-                                <?php echo e($settings->enable_social_login == 'yes' ? 'checked' : ''); ?>>
-                            <span class="selectgroup-button">On</span>
-                        </label>
-                        <label class="selectgroup-item">
-                            <input type="radio" name="social"
-                                <?php echo e($settings->enable_social_login != 'yes' ? 'checked' : ''); ?> value="no"
-                                class="selectgroup-input">
-                            <span class="selectgroup-button">Off</span>
-                        </label>
-                    </div>
-                    <div>
-                        <small class="">Google Login allows users to login/register with their google
-                            account</small>
-                    </div>
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div class="mt-4 col-md-6">
                     <h5 class="">Email Verification</h5>
@@ -296,29 +295,29 @@
                             plan.</small>
                     </div>
                 </div>
-                <div class="mt-4 col-md-6">
-                    <h5 class="">Use Onlinetrader Copytrading</h5>
-                    <div class="selectgroup">
-                        <label class="selectgroup-item">
-                            <input type="radio" name="use_copytrade" value="1" class="selectgroup-input"
-                                <?php echo e($settings->use_copytrade ? 'checked' : ''); ?>>
-                            <span class="selectgroup-button">Yes</span>
-                        </label>
-                        <label class="selectgroup-item">
-                            <input type="radio" name="use_copytrade"
-                                <?php echo e(!$settings->use_copytrade ? 'checked' : ''); ?> value="0"
-                                class="selectgroup-input">
-                            <span class="selectgroup-button">No</span>
-                        </label>
-                    </div>
-                    <div>
-                        <small>
-                            Turn off if you have your own copy trade system, and you only want to process users
-                            subscription without
-                            using our copytrade system.
-                        </small>
-                    </div>
-                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
             <div class="mt-4">
                 <input type="submit" class="px-5 btn btn-primary btn-lg" value="Save">

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateActivitiesTable extends Migration
+class AddColumnToSettings extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateActivitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('activities', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('settings', function (Blueprint $table) {
+            $table->integer('phone')->default(0)->after('contact_email');
         });
     }
 
@@ -26,6 +25,8 @@ class CreateActivitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activities');
+        Schema::table('settings', function (Blueprint $table) {
+            $table->dropColumn('phone');
+        });
     }
 }

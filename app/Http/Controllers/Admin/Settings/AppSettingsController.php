@@ -129,6 +129,7 @@ class AppSettingsController extends Controller
             ->update([
                 'newupdate' => $request['update'],
                 'site_name' => $request['site_name'],
+                'phone' => $request['phone'],
                 'description' => $request['description'],
                 'keywords' => $request['keywords'],
                 'timezone' => $request['timezone'],

@@ -62,55 +62,55 @@
                 </div>
             </div>
             <hr>
-            <div class="form-row">
-                <div class="col-md-12">
-                    <h4>Google Login Credentials</h4>
-                    <hr>
-                </div>
-            </div>
-            <div class=" form-row">
-                <div class="form-group col-md-6">
-                    <h5 class="">Client ID</h5>
-                    <input type="text" name="google_id" class="form-control  " value="<?php echo e($settings->google_id); ?>">
-                    <small class=""> From console.cloud.google.com</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Client Secret</h5>
-                    <input type="text" name="google_secret" class="form-control  "
-                        value="<?php echo e($settings->google_secret); ?>">
-                    <small class=""> From console.cloud.google.com</small>
-                </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Redirect URL</h5>
-                    <input type="text" name="google_redirect" class="form-control  "
-                        value="<?php echo e($settings->google_redirect); ?>">
-                    <small class="">Set this to your Valid OAuth Redirect URI in console.cloud.google.com. Be sure
-                        to replace the 'yoursite.com' with your website url </small>
-                </div>
-            </div>
-            <div class="mt-4 form-row">
-                <div class="col-md-12">
-                    <h4>Google Captcha Credentials</h4>
-                    <hr>
-                </div>
-            </div>
-            <div class=" form-row">
-                <div class="form-group col-md-6">
-                    <h5 class="">Captcha Secret</h5>
-                    <input type="text" name="capt_secret" class="form-control  "
-                        value="<?php echo e($settings->capt_secret); ?>">
-                    <small class=""> From https://www.google.com/recaptcha/admin/create </small>
-                </div>
-                <div class="form-group col-md-6">
-                    <h5 class="">Captcha Site-Key</h5>
-                    <input type="text" name="capt_sitekey" class="form-control  "
-                        value="<?php echo e($settings->capt_sitekey); ?>">
-                    <small class=""> From https://www.google.com/recaptcha/admin/create</small>
-                </div>
-                <div class="form-group col-md-12">
-                    <input type="submit" class="px-5 btn btn-primary btn-lg" value="Save">
-                </div>
-            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </form>
     </div>
 </div>

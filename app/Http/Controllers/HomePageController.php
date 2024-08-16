@@ -19,7 +19,7 @@ class HomePageController extends Controller
 {
     protected $activeTemplate;
     public function activeTemplate(){
-        return 'home';
+        return 'snappy';
     }
     public function index()
     {

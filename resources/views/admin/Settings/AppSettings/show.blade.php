@@ -30,7 +30,7 @@
                         <a href="#pref" class="nav-link" data-toggle="tab">Preference</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#email" class="nav-link" data-toggle="tab">Email/Google Login-Captcha</a>
+                        <a href="#email" class="nav-link" data-toggle="tab">Email</a>
                     </li>
                     <li class="nav-item">
                         <a href="#display" class="nav-link" data-toggle="tab">Theme/Display</a>
