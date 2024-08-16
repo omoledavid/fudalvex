@@ -38,6 +38,7 @@
         }
     </style>
     <script src="<?php echo e(asset('themes/snappyTheme/assets/js/jquery.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('themes/snappyTheme/assets/front/2/js/modernizr.js')); ?>"></script>
 
     <link rel="stylesheet" href="<?php echo e(asset('themes/snappyTheme/assets/front/2/css/style.css')); ?>">
 
@@ -46,9 +47,9 @@
 <body data-spy="scroll">
 <!-- Start Pre-Loader-->
 
-<!-- <div id="preloader">
+<div id="preloader">
     <div data-loader="circle-side"></div>
-</div> -->
+</div>
 <!-- End Preload -->
 <div class="animation-element">
     <!-- End Pre-Loader -->
