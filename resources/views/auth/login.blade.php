@@ -86,22 +86,22 @@
                                         <div class="form-group">
                                             <button class="btn btn-primary btn-block pad" type="submit">Sign in</button>
                                         </div>
-                                        @if ($settings->enable_social_login == 'yes')
-                                            <div class="my-2 text-center col-lg-12">
+{{--                                        @if ($settings->enable_social_login == 'yes')--}}
+{{--                                            <div class="my-2 text-center col-lg-12">--}}
 
-                                                <small>Or</small>
-                                                <div class="row">
-                                                    <!--end col-->
-                                                    <div class="col-12 my-3">
-                                                        <a href="{{ route('social.redirect', ['social' => 'google']) }}"
-                                                            class="login-with-google-btn">
-                                                            <i class="mdi mdi-google text-danger"></i> Sign in with
-                                                            Google</a>
-                                                    </div>
-                                                    <!--end col-->
-                                                </div>
-                                            </div>
-                                        @endif
+{{--                                                <small>Or</small>--}}
+{{--                                                <div class="row">--}}
+{{--                                                    <!--end col-->--}}
+{{--                                                    <div class="col-12 my-3">--}}
+{{--                                                        <a href="{{ route('social.redirect', ['social' => 'google']) }}"--}}
+{{--                                                            class="login-with-google-btn">--}}
+{{--                                                            <i class="mdi mdi-google text-danger"></i> Sign in with--}}
+{{--                                                            Google</a>--}}
+{{--                                                    </div>--}}
+{{--                                                    <!--end col-->--}}
+{{--                                                </div>--}}
+{{--                                            </div>--}}
+{{--                                        @endif--}}
                                         <div class="text-center form-group">
                                             <p class="mt-3 mb-0">
                                                 <small class="mr-2 text-dark">Don't have an account?</small>
