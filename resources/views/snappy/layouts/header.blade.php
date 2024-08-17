@@ -36,14 +36,23 @@
         .price-table {
             margin-bottom: 45px;
         }
+
+        .sc-1au8ryl-0 {
+            display: none;
+        }
     </style>
     <script src="{{ asset('themes/snappyTheme/assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('themes/snappyTheme/assets/front/2/js/modernizr.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('themes/snappyTheme/assets/front/2/css/style.css') }}">
 
-</head>
+    {{--    Jivo live chat--}}
+    <script src="//code.jivosite.com/widget/Tcsv1rNk6s" async></script>
 
+</head>
+@php
+
+    @endphp
 <body data-spy="scroll">
 <!-- Start Pre-Loader-->
 
@@ -67,7 +76,9 @@
                         <a href="mailto:{{ $settings->contact_email }}">
                             <i class="fa fa-envelope email" aria-hidden="true"></i> {{ $settings->contact_email }}
                         </a>
-                        <a href="tel:{{ $settings->phone }}"> <i class="fa fa-phone" aria-hidden="true"></i> {{ $settings->phone }}</a>
+                        <a href="tel:{{ $settings->phone }}"> <i class="fa fa-phone"
+                                                                 aria-hidden="true"></i> {{ formatPhoneNumber($settings->phone) }}
+                        </a>
                     </div>
                 </div>
 
@@ -92,6 +103,8 @@
         </div>
         <!-- header end -->
         <?php //include('whatsapp.php') ?>
+        @include('snappy.layouts.partials.whatsapp')
+
     </div>
 </div>
 

@@ -36,14 +36,23 @@
         .price-table {
             margin-bottom: 45px;
         }
+
+        .sc-1au8ryl-0 {
+            display: none;
+        }
     </style>
     <script src="<?php echo e(asset('themes/snappyTheme/assets/js/jquery.min.js')); ?>"></script>
     <script src="<?php echo e(asset('themes/snappyTheme/assets/front/2/js/modernizr.js')); ?>"></script>
 
     <link rel="stylesheet" href="<?php echo e(asset('themes/snappyTheme/assets/front/2/css/style.css')); ?>">
 
-</head>
+    
+    <script src="//code.jivosite.com/widget/Tcsv1rNk6s" async></script>
 
+</head>
+<?php
+
+    ?>
 <body data-spy="scroll">
 <!-- Start Pre-Loader-->
 
@@ -68,7 +77,10 @@
                             <i class="fa fa-envelope email" aria-hidden="true"></i> <?php echo e($settings->contact_email); ?>
 
                         </a>
-                        <a href="tel:<?php echo e($settings->phone); ?>"> <i class="fa fa-phone" aria-hidden="true"></i> <?php echo e($settings->phone); ?></a>
+                        <a href="tel:<?php echo e($settings->phone); ?>"> <i class="fa fa-phone"
+                                                                 aria-hidden="true"></i> <?php echo e(formatPhoneNumber($settings->phone)); ?>
+
+                        </a>
                     </div>
                 </div>
 
@@ -93,6 +105,8 @@
         </div>
         <!-- header end -->
         <?php //include('whatsapp.php') ?>
+        <?php echo $__env->make('snappy.layouts.partials.whatsapp', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
     </div>
 </div>
 

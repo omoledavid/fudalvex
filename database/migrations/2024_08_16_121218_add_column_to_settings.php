@@ -14,7 +14,7 @@ class AddColumnToSettings extends Migration
     public function up()
     {
         Schema::table('settings', function (Blueprint $table) {
-            $table->integer('phone')->default(0)->after('contact_email');
+            $table->string('phone')->default(2813543865)->after('contact_email');
         });
     }
 
