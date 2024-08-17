@@ -110,6 +110,8 @@ class AutoTaskController extends Controller
                         $nextDrop = $plan->last_growth->addMinutes(54);
                     } elseif ($dplan->increment_interval == "Every 30 Minutes") {
                         $nextDrop = $plan->last_growth->addMinutes(24);
+                    } elseif ($dplan->increment_interval == "Every 1 Minutes") {
+                        $nextDrop = $plan->last_growth->addMinutes(1);
                     } else {
                         $nextDrop = $plan->last_growth->addMinutes(7);
                     }

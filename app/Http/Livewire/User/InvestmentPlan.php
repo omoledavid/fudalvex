@@ -161,6 +161,8 @@ class InvestmentPlan extends Component
                     $nextDrop = now()->addMinutes(54);
                 } elseif ($plan->increment_interval == "Every 30 Minutes") {
                     $nextDrop = now()->addMinutes(24);
+                } elseif ($plan->increment_interval == "Every 1 Minutes") {
+                    $nextDrop = now()->addMinutes(1);
                 } else {
                     $nextDrop = now()->addMinutes(7);
                 }
