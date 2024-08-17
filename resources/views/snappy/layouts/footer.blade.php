@@ -119,7 +119,7 @@
                         "nb_sides": 5
                     },
                     "image": {
-                        "src": "{{$settings->favicon}}",
+                        "src": "{{ asset('storage/' . $settings->favicon) }}",
 
                         "width": 300,
                         "height": 300
