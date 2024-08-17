@@ -16,6 +16,7 @@
     @include('snappy.sections.plans')
     @include('snappy.sections.marketAnalysis')
     @include('snappy.sections.referer')
+    @include('snappy.sections.certification')
     @include('snappy.sections.topInvestors')
     @include('snappy.sections.counter')
     @include('snappy.sections.testimonies')

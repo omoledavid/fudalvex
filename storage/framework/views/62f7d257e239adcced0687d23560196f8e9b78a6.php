@@ -40,6 +40,13 @@
         .sc-1au8ryl-0 {
             display: none;
         }
+        .cert{
+            background: #0c9ac1;
+            display: inline-block;
+            color: white;
+            padding: 3px 5px;
+            border-radius: 5px;
+        }
     </style>
     <script src="<?php echo e(asset('themes/snappyTheme/assets/js/jquery.min.js')); ?>"></script>
     <script src="<?php echo e(asset('themes/snappyTheme/assets/front/2/js/modernizr.js')); ?>"></script>

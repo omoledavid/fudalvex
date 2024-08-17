@@ -119,7 +119,7 @@
                         "nb_sides": 5
                     },
                     "image": {
-                        "src": "<?php echo e($settings->favicon); ?>",
+                        "src": "<?php echo e(asset('storage/' . $settings->favicon)); ?>",
 
                         "width": 300,
                         "height": 300
