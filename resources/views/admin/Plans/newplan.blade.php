@@ -74,7 +74,7 @@
                                 <option>Daily</option>
                                 <option>Hourly</option>
                                 <option>Every 30 Minutes</option>
-                                <option>Every 10 Minutes</option>
+                                <option>Every 1 Minutes</option>
                             </select>
                             <small class="">
                                 This specifies how often the system should add profit(ROI) to user account.
