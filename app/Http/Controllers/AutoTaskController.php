@@ -137,6 +137,7 @@ class AutoTaskController extends Controller
 
         $nextDrop = $this->calculateNextDrop($plan->last_growth, $dplan->increment_interval);
 
+
         if ($this->shouldIncrementRoi($plan, $user, $settings, $now, $nextDrop)) {
             $this->incrementRoi($plan, $dplan, $user, $settings, $nextDrop);
         }
@@ -160,7 +161,7 @@ class AutoTaskController extends Controller
             case "Every 30 Minutes":
                 return $lastGrowth->addMinutes(24);
             case "Every 1 Minute":
-                return $lastGrowth->addMinutes(1);
+                return $lastGrowth->addMinutes(2);
             default:
                 return $lastGrowth->addMinutes(7);
         }
