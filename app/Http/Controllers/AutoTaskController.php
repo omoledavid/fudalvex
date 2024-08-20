@@ -16,202 +16,227 @@ use App\Services\ReferralCommisionService;
 use App\Traits\BinanceApi;
 use App\Traits\Coinpayment;
 use App\Traits\PingServer;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class AutoTaskController extends Controller
 {
     use Coinpayment, BinanceApi, PingServer;
-    /*
-        Automatic toup
-        calculate top up earnings and
-        auto increment earnings after the increment time
-    */
 
     public function autotopup()
     {
-        // automatic roi
-        $this->automaticRoi();
+        try {
+            // automatic roi
+            $this->automaticRoi();
 
-        // check for subscription expiration
-        $this->checkSubscription();
+            // check for subscription expiration
+            $this->checkSubscription();
 
-        //do auto confirm payments
-        $this->queryOrder();
-        echo "Automatic ROI is working properly \n CoinPayment:";
-        return $this->cpaywithcp();
-    }
+            // do auto confirm payments
+            $this->queryOrder();
 
-    public function checkSubscription()
-    {
-        $subscriptions = Mt4Details::where('status', 'active')->get();
-        $today = now();
-        $settings = Settings::find(1);
+            // Log the execution
+            Log::info("Automatic ROI task ran successfully");
 
-        foreach ($subscriptions as $sub) {
-            $endAt = Carbon::parse($sub->end_date);
-            $remindAt = Carbon::parse($sub->reminded_at);
-            $singleSub = Mt4Details::find($sub->id);
-            $user = User::find($singleSub->client_id);
-
-            if ($today->isSameDay($endAt) && $singleSub->status != 'Expired') {
-                //mark sub as expired
-                $singleSub->status = 'Expired';
-                $singleSub->save();
-
-                //send email to user
-                $messageUser = "Your subscription with MT4-ID: $sub->mt4_id have expired. To enable us continue trading on this account, please renew your subcription. \r\n To renew your subcription, login to your $settings->site_name account, go to managed accounts page and click on the renew button on the affected account.";
-                Mail::to($user->email)->send(new NewNotification($messageUser, 'Your subscription have expired', $user->firstname));
-
-                // Send email to admin
-                $messageAdmin = "Subscription with MT4-ID: $sub->mt4_id have expired and the user have been notified.";
-                Mail::to($settings->contact_email)->send(new NewNotification($messageAdmin, 'Your subscription have expired', 'Admin'));
+            // Only echo if not running from a console (e.g., cron job)
+            if (!app()->runningInConsole()) {
+                echo "Automatic ROI is working properly \n CoinPayment:";
             }
 
-            if ($today->isSameDay($remindAt)) {
-                // number of days for subscription to expire
-                $daysLeft = $endAt->diffInDays($remindAt);
-
-                //send email to user
-                $message = "Your subscription with MT4-ID: $sub->mt4_id will expire in $daysLeft days. To avoid disconnection of your trading account, please renew your subcription before $endAt. \r\n To renew your subcription, login to your $settings->site_name account, go to managed accounts page and click on the renew button on the affected account.";
-                Mail::to($singleSub->tuser->email)->send(new NewNotification($message, 'Your subscription will expire soon', $singleSub->tuser->firstname));
-
-                $singleSub->reminded_at = $remindAt->addDay();   //2022-12-21 19:50:58
-                $singleSub->save();
-            }
+            return $this->cpaywithcp();
+        } catch (\Exception $e) {
+            Log::error("Auto top-up failed: " . $e->getMessage());
         }
     }
 
 
-
-    public function automaticRoi()
+    private function checkSubscription()
     {
-        User_plans::where('active', 'yes')
-            ->chunkById(200, function ($usersPlans) {
+        try {
+            $subscriptions = Mt4Details::where('status', 'active')->get();
+            $today = now();
+            $settings = Settings::find(1);
 
-                $now = now();
+            foreach ($subscriptions as $sub) {
+                $this->processSubscription($sub, $today, $settings);
+            }
+        } catch (\Exception $e) {
+            Log::error("Subscription check failed: " . $e->getMessage());
+        }
+    }
+
+    private function processSubscription($sub, $today, $settings)
+    {
+        $endAt = Carbon::parse($sub->end_date);
+        $remindAt = Carbon::parse($sub->reminded_at);
+        $singleSub = Mt4Details::find($sub->id);
+        $user = User::find($singleSub->client_id);
+
+        if ($today->isSameDay($endAt) && $singleSub->status != 'Expired') {
+            $this->expireSubscription($singleSub, $user, $settings);
+        }
+
+        if ($today->isSameDay($remindAt)) {
+            $this->remindSubscription($singleSub, $endAt, $settings);
+        }
+    }
+
+    private function expireSubscription($singleSub, $user, $settings)
+    {
+        $singleSub->status = 'Expired';
+        $singleSub->save();
+
+        $messageUser = "Your subscription with MT4-ID: {$singleSub->mt4_id} has expired. To enable us to continue trading on this account, please renew your subscription. \r\n To renew your subscription, login to your {$settings->site_name} account, go to managed accounts page and click on the renew button on the affected account.";
+        $messageAdmin = "Subscription with MT4-ID: {$singleSub->mt4_id} has expired, and the user has been notified.";
+
+        try {
+            Mail::to($user->email)->send(new NewNotification($messageUser, 'Your subscription has expired', $user->firstname));
+            Mail::to($settings->contact_email)->send(new NewNotification($messageAdmin, 'Subscription Expired', 'Admin'));
+        } catch (\Exception $e) {
+            Log::error("Failed to send subscription expiration email: " . $e->getMessage());
+        }
+    }
+
+    private function remindSubscription($singleSub, $endAt, $settings)
+    {
+        $daysLeft = $endAt->diffInDays(now());
+
+        $message = "Your subscription with MT4-ID: {$singleSub->mt4_id} will expire in {$daysLeft} days. To avoid disconnection of your trading account, please renew your subscription before {$endAt->toDateString()}. \r\n To renew your subscription, login to your {$settings->site_name} account, go to managed accounts page and click on the renew button on the affected account.";
+
+        try {
+            Mail::to($singleSub->tuser->email)->send(new NewNotification($message, 'Subscription Expiration Reminder', $singleSub->tuser->firstname));
+        } catch (\Exception $e) {
+            Log::error("Failed to send subscription reminder email: " . $e->getMessage());
+        }
+
+        $singleSub->reminded_at = now()->addDay();
+        $singleSub->save();
+    }
+
+    private function automaticRoi()
+    {
+        try {
+            User_plans::where('active', 'yes')->chunkById(200, function ($usersPlans) {
                 $settings = Settings::find(1);
 
                 foreach ($usersPlans as $plan) {
-                    //get plan
-                    $dplan = Plans::where('id', $plan->plan)->first();
-
-                    //get user
-                    $user = User::where('id', $plan->user)->first();
-
-                    //know the plan increment interval
-                    if ($dplan->increment_interval == "Monthly") {
-                        $nextDrop = $plan->last_growth->addDays(27);
-                    } elseif ($dplan->increment_interval == "Weekly") {
-                        $nextDrop = $plan->last_growth->addDays(6);
-                    } elseif ($dplan->increment_interval == "Daily") {
-                        $nextDrop = $plan->last_growth->addHours(23);
-                    } elseif ($dplan->increment_interval == "Hourly") {
-                        $nextDrop = $plan->last_growth->addMinutes(54);
-                    } elseif ($dplan->increment_interval == "Every 30 Minutes") {
-                        $nextDrop = $plan->last_growth->addMinutes(24);
-                    } elseif ($dplan->increment_interval == "Every 1 Minutes") {
-                        $nextDrop = $plan->last_growth->addMinutes(1);
-                    } else {
-                        $nextDrop = $plan->last_growth->addMinutes(7);
-                    }
-
-                    //conditions
-                    $haveNotExpired = $now->lessThanOrEqualTo($plan->expire_date);
-
-                    $hasExpired = $now->greaterThan($plan->expire_date);
-
-                    if ($haveNotExpired) {
-                        //calculate roi/profit
-                        if ($dplan->increment_type == "Percentage") {
-                            $increment = (intval($plan->amount)  * $dplan->increment_amount) / 100;
-                        } else {
-                            $increment = $plan->increment_amount;
-                        }
-
-                        if ($settings->trade_mode == 'on' && $user->trade_mode == 'on' && ($now->isWeekday() || $settings->weekend_trade == 'on')) {
-
-                            if ($now->greaterThanOrEqualTo($plan->last_growth)) {
-                                //increment user account balance
-                                $user->account_bal = $user->account_bal + $increment;
-                                $user->roi = $user->roi + $increment;
-                                $user->save();
-
-                                //save to transactions history
-                                $th = new Tp_Transaction();
-                                $th->plan = $dplan->name;
-                                $th->user = $user->id;
-                                $th->amount = $increment;
-                                $th->user_plan_id = $plan->id;
-                                $th->type = "ROI";
-                                $th->save();
-
-                                $plan->update([
-                                    'last_growth' => $nextDrop,
-                                    'profit_earned' => $plan->profit_earned + $increment,
-                                ]);
-
-                                if ($settings->referral_proffit_from != 'Deposit') {
-                                    // credit referral commission
-                                    $ref = new ReferralCommisionService($user, $increment);
-                                    $ref->run();
-                                }
-
-                                $user->notify(new AccountNotification("You have a new profit. Plan: {$dplan->name}, Amount: {$settings->currency}{$increment}", 'New Profit record'));
-
-                                //send email notification
-                                if ($user->sendroiemail == 'Yes') {
-                                    Mail::to($user->email)->send(new NewRoi($user, $dplan->name, $increment, now(), 'New Return on Investment(ROI)'));
-                                }
-                            }
-                        }
-                        if ($settings->trade_mode != 'on' || $user->trade_mode != 'on' || ($now->isWeekend() && $settings->weekend_trade != 'on')) {
-                            if ($now->greaterThanOrEqualTo($plan->last_growth)) {
-                                User_plans::where('id', $plan->id)
-                                    ->update([
-                                        'last_growth' => $nextDrop,
-                                    ]);
-                            }
-                        }
-                    }
-
-                    if ($hasExpired) {
-                        //release capital
-                        if ($settings->return_capital) {
-
-                            User::where('id', $plan->user)
-                                ->update([
-                                    'account_bal' => $user->account_bal + $plan->amount,
-                                ]);
-
-                            //save to transactions history
-                            $th = new Tp_transaction();
-                            $th->plan = $dplan->name;
-                            $th->user = $plan->user;
-                            $th->amount = $plan->amount;
-                            $th->type = "Investment capital";
-                            $th->save();
-                        }
-
-                        //plan expiredP
-                        $plan->update([
-                            'active' => "expired",
-                        ]);
-
-                        if ($user->sendinvplanemail == "Yes") {
-                            //send email notification
-                            $objDemo = new \stdClass();
-                            $objDemo->receiver_email = $user->email;
-                            $objDemo->receiver_plan = $dplan->name;
-                            $objDemo->received_amount = "$settings->currency$plan->amount";
-                            $objDemo->sender = $settings->site_name;
-                            $objDemo->receiver_name = $user->name;
-                            $objDemo->date = \Carbon\Carbon::Now();
-                            $objDemo->subject = "Investment plan closed";
-                            Mail::to($user->email)->send(new endplan($objDemo));
-                        }
-                    }
+                    $this->processPlanRoi($plan, $settings);
                 }
-            }, $column = 'id');
+            });
+        } catch (\Exception $e) {
+            Log::error("Automatic ROI calculation failed: " . $e->getMessage());
+        }
+    }
+
+    private function processPlanRoi($plan, $settings)
+    {
+        $now = now();
+        $dplan = Plans::find($plan->plan);
+        $user = User::find($plan->user);
+
+        $nextDrop = $this->calculateNextDrop($plan->last_growth, $dplan->increment_interval);
+
+        if ($this->shouldIncrementRoi($plan, $user, $settings, $now, $nextDrop)) {
+            $this->incrementRoi($plan, $dplan, $user, $settings, $nextDrop);
+        }
+
+        if ($this->hasExpired($plan, $now)) {
+            $this->handlePlanExpiration($plan, $dplan, $user, $settings);
+        }
+    }
+
+    private function calculateNextDrop($lastGrowth, $interval)
+    {
+        switch ($interval) {
+            case "Monthly":
+                return $lastGrowth->addDays(27);
+            case "Weekly":
+                return $lastGrowth->addDays(6);
+            case "Daily":
+                return $lastGrowth->addHours(23);
+            case "Hourly":
+                return $lastGrowth->addMinutes(54);
+            case "Every 30 Minutes":
+                return $lastGrowth->addMinutes(24);
+            case "Every 1 Minute":
+                return $lastGrowth->addMinutes(1);
+            default:
+                return $lastGrowth->addMinutes(7);
+        }
+    }
+
+    private function shouldIncrementRoi($plan, $user, $settings, $now, $nextDrop)
+    {
+        return $now->lessThanOrEqualTo($plan->expire_date) &&
+            $settings->trade_mode === 'on' &&
+            $user->trade_mode === 'on' &&
+            ($now->isWeekday() || $settings->weekend_trade === 'on') &&
+            $now->greaterThanOrEqualTo($plan->last_growth);
+    }
+
+    private function incrementRoi($plan, $dplan, $user, $settings, $nextDrop)
+    {
+        $increment = $dplan->increment_type === "Percentage"
+            ? (intval($plan->amount) * $dplan->increment_amount) / 100
+            : $dplan->increment_amount;
+
+        $user->account_bal += $increment;
+        $user->roi += $increment;
+        $user->save();
+
+        Tp_Transaction::create([
+            'plan' => $dplan->name,
+            'user' => $user->id,
+            'amount' => $increment,
+            'user_plan_id' => $plan->id,
+            'type' => "ROI",
+        ]);
+
+        $plan->update([
+            'last_growth' => $nextDrop,
+            'profit_earned' => $plan->profit_earned + $increment,
+        ]);
+
+        if ($settings->referral_proffit_from !== 'Deposit') {
+            $referralService = new ReferralCommisionService($user, $increment);
+            $referralService->run();
+        }
+
+        $user->notify(new AccountNotification("You have a new profit. Plan: {$dplan->name}, Amount: {$settings->currency}{$increment}", 'New Profit record'));
+
+        if ($user->sendroiemail === 'Yes') {
+            try {
+                Mail::to($user->email)->send(new NewRoi($user, $dplan->name, $increment, now(), 'New Return on Investment(ROI)'));
+            } catch (\Exception $e) {
+                Log::error("Failed to send ROI email: " . $e->getMessage());
+            }
+        }
+    }
+
+    private function hasExpired($plan, $now)
+    {
+        return $now->greaterThan($plan->expire_date);
+    }
+
+    private function handlePlanExpiration($plan, $dplan, $user, $settings)
+    {
+        if ($settings->return_capital) {
+            $user->account_bal += $plan->capital;
+        }
+
+        $user->save();
+
+        $plan->update(['active' => 'expired']);
+
+        if ($settings->send_notification) {
+            $user->notify(new AccountNotification("Your investment plan has expired. Plan: {$dplan->name}, Capital: {$settings->currency}{$plan->capital}.", 'Investment Plan Ended'));
+        }
+
+        try {
+            Mail::to($user->email)->send(new endplan($user, $dplan->name, $plan->capital, now(), 'Investment Plan Expired'));
+        } catch (\Exception $e) {
+            Log::error("Failed to send plan expiration email: " . $e->getMessage());
+        }
     }
 }

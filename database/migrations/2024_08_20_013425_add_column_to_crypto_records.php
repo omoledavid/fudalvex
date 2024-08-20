@@ -16,7 +16,7 @@ class AddColumnToCryptoRecords extends Migration
         Schema::table('crypto_records', function (Blueprint $table) {
             $table->integer('user_id')->after('id');
         });
-    }
+}
 
     /**
      * Reverse the migrations.
